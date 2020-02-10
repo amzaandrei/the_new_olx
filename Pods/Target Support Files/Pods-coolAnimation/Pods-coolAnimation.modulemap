@@ -1,0 +1,6 @@
+framework module Pods_coolAnimation {
+  umbrella header "Pods-coolAnimation-umbrella.h"
+
+  export *
+  module * { export * }
+}
