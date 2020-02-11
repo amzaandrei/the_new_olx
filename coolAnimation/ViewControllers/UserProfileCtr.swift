@@ -14,11 +14,8 @@ import GoogleSignIn
 import FBSDKLoginKit
 import Stripe
 //class profilData: UIViewController, UITableViewDelegate, UITableViewDataSource,STPShippingAddressViewControllerDelegate, STPAddCardViewControllerDelegate  {
-class profilData: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class UserProfileCtr: UIViewController, UITableViewDelegate, UITableViewDataSource  {
 
-    
-    
-    
     @objc let cellIdSettings = "cellId"
     
 //    let settingsVC = SettingsViewController()

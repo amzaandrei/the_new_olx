@@ -12,9 +12,9 @@ import AVFoundation
 class messageCell: UICollectionViewCell{
     
     
-    @objc var message: messages?
+    @objc var message: Messages?
     
-    @objc var chatLogController: pageChat?
+    @objc var chatLogController: ChatPageController?
     
     @objc let textView: UITextView = {
         let tv = UITextView()

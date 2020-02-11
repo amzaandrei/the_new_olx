@@ -484,7 +484,7 @@ class expendedViewController: UIViewController, UIViewControllerTransitioningDel
     }
 
     @objc func addProduct(){
-        let submitPage = subminttingForm()
+        let submitPage = ProductSubmitCtr()
         submitPage.alreadyCategory = categoryName.text
         present(submitPage, animated: true, completion: nil)
     }
@@ -699,7 +699,7 @@ class expendedViewController: UIViewController, UIViewControllerTransitioningDel
     
     @objc func registerNewCard(){
         
-        let submittinPage = subminttingForm()
+        let submittinPage = ProductSubmitCtr()
         let submittNav = UINavigationController(rootViewController: submittinPage)
         present(submittNav, animated: true, completion: nil)
     }
@@ -767,7 +767,7 @@ class expendedViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     @objc func profileDataPage(){
-        let profilDataPage = profilData()
+        let profilDataPage = UserProfileCtr()
         let navigationController = UINavigationController(rootViewController: profilDataPage)
         present(navigationController, animated: true, completion: nil)
     }

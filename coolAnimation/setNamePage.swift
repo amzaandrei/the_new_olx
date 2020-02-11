@@ -140,7 +140,7 @@ class setName: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
                 }
             })
         }
-        let mainClasss = mainClass()
+        let mainClasss = MainTabController()
         present(mainClasss, animated: true, completion: nil)
     }
     

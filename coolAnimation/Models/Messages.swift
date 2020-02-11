@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class messages: NSObject{
+class Messages: NSObject{
     
     @objc var fromId: String?
     @objc var fromIdName: String?
@@ -49,7 +49,7 @@ class messages: NSObject{
     }
     
     
-    public static func == (leftStr: messages, rightStr: messages) -> Bool{
+    public static func == (leftStr: Messages, rightStr: Messages) -> Bool{
         return leftStr.fromId == rightStr.fromId
     }
     

@@ -22,8 +22,8 @@ import Stripe
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-    var lastStruct = [messages]()
-    var savedStruct = [messages]()
+    var lastStruct = [Messages]()
+    var savedStruct = [Messages]()
     
     let userDefaults = UserDefaults()
     
@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
         if !isLoggedIn{
             window?.rootViewController = IntroductionPageController()
         }else{
-            window?.rootViewController = mainClass()
+            window?.rootViewController = MainTabController()
         }
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
@@ -138,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
                     while let rest = enumerate.nextObject() as? DataSnapshot{
                         if let findName = rest.value as? [String: Any]{
                             if name == findName["name"] as? String{
-                                let pageChatVar = pageChat()
+                                let pageChatVar = ChatPageController()
                                 pageChatVar.sendMessagesNotification(text: textResponse.userText, toId: rest.key)
                             }
                         }
@@ -227,7 +227,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
                 
                 
                 if let dictionary = snapshot.value as? [String: AnyObject]{
-                    let messagesValue = messages(dictionary: dictionary)
+                    let messagesValue = Messages(dictionary: dictionary)
                     self.lastStruct.append(messagesValue)
                     
                 }

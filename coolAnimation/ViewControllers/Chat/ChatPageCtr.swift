@@ -12,7 +12,7 @@ import MobileCoreServices
 import AVFoundation
 import CoreData
 
-class pageChat: UICollectionViewController  , UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
+class ChatPageController: UICollectionViewController  , UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
     
     @objc var userNameAddContact: User?{
         didSet{
@@ -27,7 +27,7 @@ class pageChat: UICollectionViewController  , UICollectionViewDelegateFlowLayout
     }
     
     @objc let cellId = "cellId"
-    @objc var message = [messages]()
+    @objc var message = [Messages]()
     @objc var messageCoreData = [ChatInfoModel]()
     @objc var manajedObjectContext: NSManagedObjectContext!
     
@@ -155,7 +155,7 @@ class pageChat: UICollectionViewController  , UICollectionViewDelegateFlowLayout
     }
     
     @objc func pushToDetailView(){
-        let infoPage = chatPageInfo()
+        let infoPage = ChatPageInfoController()
         infoPage.userInfoName = userNameAddContact?.name
         self.navigationController?.pushViewController(infoPage, animated: true)
     }
@@ -383,7 +383,7 @@ class pageChat: UICollectionViewController  , UICollectionViewDelegateFlowLayout
         
     }
     
-    @objc func createCellLayout(cell: messageCell, messageArray: messages){
+    @objc func createCellLayout(cell: messageCell, messageArray: Messages){
         
         if let profileImageUrl = self.userNameAddContact?.profileImageUrl {
             cell.profileImageView.loadImageUsingCacheString(urlString: profileImageUrl)
@@ -548,7 +548,7 @@ class pageChat: UICollectionViewController  , UICollectionViewDelegateFlowLayout
             realMessRef.child("messages").child(messageId).observe(.value, with: { (snapshot) in
                 
                 if let dictionary = snapshot.value as? [String: AnyObject]{
-                    let message = messages(dictionary: dictionary)
+                    let message = Messages(dictionary: dictionary)
                     
                     if message.chatPartner() == self.userNameAddContact?.id {
                         self.message.append(message)

@@ -107,7 +107,7 @@ class ChooseWhichRegisterController: UIViewController,FBSDKLoginButtonDelegate, 
     }
     
     @objc func presentRealSignInPage(){
-        let realLogPage = LogInEmailController()
+        let realLogPage = SignUpEmailController()
         self.present(realLogPage, animated: true, completion: nil)
     }
     
@@ -173,7 +173,7 @@ class ChooseWhichRegisterController: UIViewController,FBSDKLoginButtonDelegate, 
                             }
                         }
                         if ok {
-                            self.present(mainClass(), animated: true, completion: nil)
+                            self.present(MainTabController(), animated: true, completion: nil)
                             self.uploadDataToFirebase(emailAdress: emailAdress!,userName: userName!,url: url as! String,userId: userId)
                         }else{
                             let alertController = UIAlertController(title: "Important", message: "In our database exists a similiar account", preferredStyle: .alert)
@@ -244,7 +244,7 @@ class ChooseWhichRegisterController: UIViewController,FBSDKLoginButtonDelegate, 
                     }
                 }
                 if ok {
-                    self.present(mainClass(), animated: true, completion: nil)
+                    self.present(MainTabController(), animated: true, completion: nil)
                     self.uploadDataToFirebase(emailAdress: emailAdress!,userName: userName!,url: url as! String,userId: (user?.uid)!)
                 }else{
                     let alertController = UIAlertController(title: "Important", message: "In our database exists a similiar account", preferredStyle: .alert)
@@ -277,7 +277,7 @@ class ChooseWhichRegisterController: UIViewController,FBSDKLoginButtonDelegate, 
             guard let token = session?.authToken else { return }
             guard let secret = session?.authTokenSecret else { return }
             let credentials = TwitterAuthProvider.credential(withToken: token, secret: secret)
-            self.present(mainClass(), animated: true, completion: nil)
+            self.present(MainTabController(), animated: true, completion: nil)
             Auth.auth().signIn(with: credentials, completion: { (user, error) in
                 
                 if let err = error {

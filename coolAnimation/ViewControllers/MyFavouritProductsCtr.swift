@@ -8,7 +8,8 @@
 
 import UIKit
 import Firebase
-class myFavouritProducts: UIViewController, UITableViewDelegate, UITableViewDataSource{
+
+class MyFavouritProductsController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     let cellId = "cellId"
     var objectContent = [object]()

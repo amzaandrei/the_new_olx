@@ -12,16 +12,17 @@
  import CoreData
  import UserNotifications
  import Crashlytics
- class coolAnimation: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
+ 
+ class TinderController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
     
     
     let reachiability = Reachability()!
     @objc let colorArray: [UIColor] = [UIColor.red,UIColor.green,UIColor.blue,UIColor.yellow,UIColor.brown,UIColor.orange]
     
     //    var users = [User]()
-    @objc var MESSAGES = [messages]()
+    @objc var MESSAGES = [Messages]()
     @objc var messageCoreData = [ChatInfoModel]()
-    @objc var messagesDictionary = [String: messages]()
+    @objc var messagesDictionary = [String: Messages]()
     
     @objc lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -120,7 +121,7 @@
                 let coreDataVar = ChatInfoModel(context: self.manageObjectContext)
                 
                 if let dictionary = snapshot.value as? [String: AnyObject]{
-                    let messagesValue = messages(dictionary: dictionary)
+                    let messagesValue = Messages(dictionary: dictionary)
                     self.MESSAGES.append(messagesValue)
 //                    coreDataVar.fromImage = messagesValue.toIdImageUrl
                     // TODO: create here seen messages
@@ -376,7 +377,7 @@
         if let Id = mainUser.chatPartner() {
             Database.database().reference().child("users").child(Id).observe(.value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject] {
-                    let userName = messages(dictionary: dictionary)
+                    let userName = Messages(dictionary: dictionary)
                     cell.textLabel.text = userName.fromIdName
                 }
             }, withCancel: nil)
@@ -407,7 +408,7 @@
     
     
     @objc func otherStuff(user: User?){
-        let expandedViewController = pageChat(collectionViewLayout: UICollectionViewFlowLayout())
+        let expandedViewController = ChatPageController(collectionViewLayout: UICollectionViewFlowLayout())
         let navController = UINavigationController(rootViewController: expandedViewController)
         expandedViewController.userNameAddContact = user
         //        expandedViewController.sendActiveMessage(messageActive: "active")
@@ -416,16 +417,6 @@
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-//        let attributes = collectionView.layoutAttributesForItem(at: indexPath)
-//        let attributesFrame = attributes?.frame
-//        let frameToOpenFrom = collectionView.convert(attributesFrame!, to: collectionView.superview)
-//        openingFrame = frameToOpenFrom
-        
-        //        let expandedViewController = pageChat(collectionViewLayout: UICollectionViewFlowLayout())
-        //        expandedViewController.transitioningDelegate = self
-        //        expandedViewController.modalPresentationStyle = .custom
-        //        present(expandedViewController, animated: true, completion: nil)
         
         let message = MESSAGES[indexPath.row]
         
@@ -447,7 +438,7 @@
     }
     
     @objc func AddMoreContacts(){
-        let addMoreFile = AddMoreContactsPage()
+        let addMoreFile = SearchContactsCtr()
         addMoreFile.coolAnimationVar = self
         let addMoreContactsFile = UINavigationController(rootViewController: addMoreFile)
         present(addMoreContactsFile, animated: true, completion: nil)
@@ -461,7 +452,7 @@
     }
     
     @objc func profileDataPage(){
-        let profilDataPage = profilData()
+        let profilDataPage = UserProfileCtr()
         let navigationController = UINavigationController(rootViewController: profilDataPage)
         present(navigationController, animated: true, completion: nil)
     }

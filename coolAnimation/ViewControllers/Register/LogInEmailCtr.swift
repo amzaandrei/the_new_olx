@@ -221,7 +221,7 @@ class LogInEmailController: UIViewController {
                 
                 self.userDefaults.set(true, forKey: "isLoggedIn")
                 
-                self.present(mainClass(), animated: true, completion: nil)
+                self.present(MainTabController(), animated: true, completion: nil)
             }
         })
         

@@ -10,7 +10,7 @@ import UIKit
 import Photos
 import AVFoundation
 import Firebase
-class subminttingForm: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate{
+class ProductSubmitCtr: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate{
     
     
     let cellId = "cellId"
@@ -52,7 +52,7 @@ class subminttingForm: UIViewController, UICollectionViewDelegate, UICollectionV
         myController.isPagingEnabled = true
         myController.delegate = self
         myController.dataSource = self
-        myController.register(myCollCell.self, forCellWithReuseIdentifier: cellId)
+        myController.register(ImagePickerCollView.self, forCellWithReuseIdentifier: cellId)
         myController.backgroundColor = UIColor(red: 34 / 255, green: 34 / 255, blue: 34 / 255, alpha: 1)
         return myController
     }()
@@ -67,7 +67,7 @@ class subminttingForm: UIViewController, UICollectionViewDelegate, UICollectionV
         myController.delegate = self
         myController.dataSource = self
         myController.isPagingEnabled = true
-        myController.register(myCollCell.self, forCellWithReuseIdentifier: cellId2)
+        myController.register(ImagePickerCollView.self, forCellWithReuseIdentifier: cellId2)
         myController.backgroundColor = UIColor(red: 34 / 255, green: 34 / 255, blue: 34 / 255, alpha: 1)
         return myController
     }()
@@ -590,37 +590,37 @@ class subminttingForm: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     let width = CGFloat(2.0)
 
-    lazy var borderProduct: modifiedCaLayer = {
-        let borderShape = modifiedCaLayer()
+    lazy var borderProduct: CALayer = {
+        let borderShape = CALayer()
         borderShape.borderWidth = width
         borderShape.borderColor = UIColor.darkGray.cgColor
         return borderShape
     }()
     
-    lazy var borderContact: modifiedCaLayer = {
-        let borderShape = modifiedCaLayer()
+    lazy var borderContact: CALayer = {
+        let borderShape = CALayer()
         let width = CGFloat(2.0)
         borderShape.borderWidth = width
         borderShape.borderColor = UIColor.darkGray.cgColor
         return borderShape
     }()
     
-    lazy var borderDescrib: modifiedCaLayer = {
-        let borderShape = modifiedCaLayer()
+    lazy var borderDescrib: CALayer = {
+        let borderShape = CALayer()
         borderShape.borderWidth = width
         borderShape.borderColor = UIColor.darkGray.cgColor
         return borderShape
     }()
     
-    lazy var borderMail: modifiedCaLayer = {
-        let borderShape = modifiedCaLayer()
+    lazy var borderMail: CALayer = {
+        let borderShape = CALayer()
         borderShape.borderWidth = width
         borderShape.borderColor = UIColor.darkGray.cgColor
         return borderShape
     }()
     
-    lazy var borderCategory: modifiedCaLayer = {
-        let borderShape = modifiedCaLayer()
+    lazy var borderCategory: CALayer = {
+        let borderShape = CALayer()
         borderShape.borderWidth = width
         borderShape.borderColor = UIColor.darkGray.cgColor
         return borderShape
@@ -695,7 +695,7 @@ class subminttingForm: UIViewController, UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if !isVisible{
-            let cell = myColl.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! myCollCell
+            let cell = myColl.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ImagePickerCollView
             let mainArrayPhotos = arrayPhotos[indexPath.row]
             cell.mainPhoto.image = mainArrayPhotos
             
@@ -704,7 +704,7 @@ class subminttingForm: UIViewController, UICollectionViewDelegate, UICollectionV
             return cell
         }else{
             let basementArrayPhotos = allLibraryPhotos[indexPath.row]
-            let cell2 = basementCollController.dequeueReusableCell(withReuseIdentifier: cellId2, for: indexPath) as! myCollCell
+            let cell2 = basementCollController.dequeueReusableCell(withReuseIdentifier: cellId2, for: indexPath) as! ImagePickerCollView
             cell2.mainPhoto.image = basementArrayPhotos
             
             let tapped2 = myTapp(target: self, action: #selector(cell2Tapp))
@@ -774,7 +774,7 @@ class subminttingForm: UIViewController, UICollectionViewDelegate, UICollectionV
     
 }
 
-extension subminttingForm {
+extension ProductSubmitCtr {
     
     func fetchPhotos(){
         
@@ -931,7 +931,7 @@ extension subminttingForm {
     
 }
 
-extension subminttingForm: sendLocationData{
+extension ProductSubmitCtr: sendLocationData{
     func sendLocation(citiName: String, countryName: String) {
         self.cityNameVar = citiName
         self.countryNameVar = countryName
@@ -951,86 +951,14 @@ extension subminttingForm: sendLocationData{
 
 
 class myTapp: UITapGestureRecognizer{
-    var cell = myCollCell()
+    var cell = ImagePickerCollView()
     var indexPath = IndexPath()
 }
 
-class myCollCell: UICollectionViewCell{
-    
-    var height: CGFloat = 250
-    let mainPhoto: UIImageView = {
-        let image = UIImage()
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    
-    
-    let blurEffect: UIVisualEffectView = {
-        let blur = UIBlurEffect(style: UIBlurEffectStyle.light)
-        let blurView = UIVisualEffectView(effect: blur)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.alpha = 0
-        //        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        return blurView
-    }()
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(mainPhoto)
-        addSubview(blurEffect)
-        
-        addConstraints()
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc func imagesLibrary(){
-        print("tapped")
-    }
-    
-    func addConstraints(){
-        blurEffect.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        blurEffect.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        blurEffect.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        blurEffect.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-        mainPhoto.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        mainPhoto.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        mainPhoto.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        mainPhoto.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-        
-    }
-    
-}
 
 
 
 
-class modifiedCaLayer: CALayer{
-    
-    
-    @objc func shake(){
-
-//        let animation = CABasicAnimation(keyPath: "position")
-//        animation.duration = 0.05
-//        animation.repeatCount = 5
-//        animation.autoreverses = true
-//        animation.fromValue = NSValue(cgPoint: CGPoint(x: bo, y: self.contentsCenter.maxY ))
-//        animation.toValue = NSValue(cgPoint: CGPoint(x: self.contentsCenter.maxX + 4, y: self.contentsCenter.maxY ))
-//
-//
-//        self.add(animation, forKey: "position")
-    }
-    
-}
 
 
 

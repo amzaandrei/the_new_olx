@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class mainClass: UITabBarController {
+class MainTabController: UITabBarController {
 
     
     override func viewDidLoad() {
@@ -27,9 +27,9 @@ class mainClass: UITabBarController {
     
     @objc func addTabs(){
         let mainViewController1 = UINavigationController(rootViewController: expendedViewController())
-        let mainViewController4 = UINavigationController(rootViewController: myFavouritProducts())
-        let mainViewController2 = UINavigationController(rootViewController: coolAnimation())
-        let mainViewController3 = UINavigationController(rootViewController: profilData())
+        let mainViewController4 = UINavigationController(rootViewController: MyFavouritProductsController())
+        let mainViewController2 = UINavigationController(rootViewController: TinderController())
+        let mainViewController3 = UINavigationController(rootViewController: UserProfileCtr())
         
         let image1 = UIImage(named: "products")
         let image2 = UIImage(named: "messages")
@@ -65,7 +65,7 @@ class mainClass: UITabBarController {
     }
     
     @objc func profileDataPage(){
-        let profilDataPage = profilData()
+        let profilDataPage = UserProfileCtr()
         let navigationController = UINavigationController(rootViewController: profilDataPage)
         present(navigationController, animated: true, completion: nil)
     }
