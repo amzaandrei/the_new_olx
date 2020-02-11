@@ -59,7 +59,7 @@ class mainClass: UITabBarController {
     
     
     @objc func LogInPage(){
-        let logPage = LogInController()
+        let logPage = LogInEmailController()
         let navigationController = UINavigationController(rootViewController: logPage)
         present(navigationController, animated: true, completion: nil)
     }

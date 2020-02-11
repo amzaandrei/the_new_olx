@@ -17,10 +17,6 @@ import CoreData
 import UserNotifications
 import Crashlytics
 import Stripe
-//pod 'FBSDKCoreKit'
-//pod 'FBSDKLoginKit'
-//pod 'FBSDKShareKit'
-//de decomentat tot ce e de fb in fisiere
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUserNotificationCenterDelegate {
@@ -45,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
         
         let isLoggedIn = userDefaults.bool(forKey: "isLoggedIn")
         if !isLoggedIn{
-            window?.rootViewController = introPage()
+            window?.rootViewController = IntroductionPageController()
         }else{
             window?.rootViewController = mainClass()
         }

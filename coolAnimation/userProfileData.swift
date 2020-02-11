@@ -237,7 +237,7 @@ class profilData: UIViewController, UITableViewDelegate, UITableViewDataSource  
         }catch let error{
             print(error)
         }
-        present(introPage(), animated: true, completion: nil)
+        present(IntroductionPageController(), animated: true, completion: nil)
     }
     
 }
