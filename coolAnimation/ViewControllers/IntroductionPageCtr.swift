@@ -11,6 +11,9 @@ import UIKit
 class IntroductionPageController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     let cellId = "cellId"
+    
+    var intro: IntroPage!
+    
     lazy var myColl: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
@@ -24,84 +27,12 @@ class IntroductionPageController: UIViewController, UICollectionViewDelegate, UI
         return myCol
     }()
     
-    let pageController: UIPageControl = {
-        let page = UIPageControl()
-        page.translatesAutoresizingMaskIntoConstraints = false
-        page.currentPage = 0
-        page.numberOfPages = 3
-        page.currentPageIndicatorTintColor = UIColor.white
-        page.pageIndicatorTintColor = UIColor.black
-        return page
-    }()
-    
-    let nextBtt: UIButton = {
-        let mainBtt = UIButton(type: .system)
-        mainBtt.setTitle("NEXT", for: .normal)
-        mainBtt.translatesAutoresizingMaskIntoConstraints = false
-        mainBtt.addTarget(self, action: #selector(scrollPageNext), for: .touchUpInside)
-        return mainBtt
-    }()
-    
-    let prevBtt: UIButton = {
-        let mainBtt = UIButton(type: .system)
-        mainBtt.setTitle("PREV", for: .normal)
-        mainBtt.translatesAutoresizingMaskIntoConstraints = false
-        mainBtt.addTarget(self, action: #selector(scrollPagePrev), for: .touchUpInside)
-        return mainBtt
-    }()
-    
-    let logInBtt: UIButton = {
-        let btt = UIButton(type: .system)
-        btt.setTitle("Log In", for: .normal)
-        btt.setTitleColor(UIColor.black, for: .normal)
-//        btt.layer.cornerRadius = 5
-//        btt.layer.masksToBounds = true
-        btt.translatesAutoresizingMaskIntoConstraints = false
-        btt.backgroundColor = UIColor(white: 1.0,alpha: 0)
-//        btt.layer.borderWidth = 1
-//        btt.layer.borderColor = UIColor.black.cgColor
-        btt.addTarget(self, action: #selector(logInPageFunc), for: .touchUpInside)
-        return btt
-    }()
-    
-    let signUpBtt: UIButton = {
-        let btt = UIButton(type: .system)
-        btt.setTitle("Sign up", for: .normal)
-        btt.setTitleColor(UIColor.black, for: .normal)
-//        btt.layer.cornerRadius = 5
-//        btt.layer.masksToBounds = true
-        btt.translatesAutoresizingMaskIntoConstraints = false
-        btt.backgroundColor = UIColor(white: 1.0,alpha: 0)
-//        btt.layer.borderWidth = 1
-//        btt.layer.borderColor = UIColor.black.cgColor
-        btt.addTarget(self, action: #selector(signUpPage), for: .touchUpInside)
-        return btt
-    }()
-    
-    let OrpBtt: UIButton = {
-        let btt = UIButton(type: .system)
-        btt.setTitle("Or", for: .normal)
-        btt.setTitleColor(UIColor.black, for: .normal)
-//        btt.layer.cornerRadius = 5
-//        btt.layer.masksToBounds = true
-        btt.translatesAutoresizingMaskIntoConstraints = false
-        btt.backgroundColor = UIColor(white: 1.0,alpha: 0)
-//        btt.layer.borderWidth = 1
-//        btt.layer.borderColor = UIColor.black.cgColor
-        btt.addTarget(self, action: #selector(orPage), for: .touchUpInside)
-        return btt
-    }()
-    
-    let helpView: UIView = {
-        let myView = UIView()
-        myView.translatesAutoresizingMaskIntoConstraints = false
-        return myView
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(myColl)
-        addConstraints()
+        addConstraintsAndIntro()
+
     }
     
     var bottomStackAnchor: NSLayoutConstraint!
@@ -125,20 +56,22 @@ class IntroductionPageController: UIViewController, UICollectionViewDelegate, UI
     }
     
     @objc func scrollPageNext(){
-        let nextIndex = min(pageController.currentPage + 1, 2) ///pages.count - 1
+        let nextIndex = min(intro.pageController.currentPage + 1, 2) ///pages.count - 1
         let indexPath = IndexPath(item: nextIndex, section: 0)
-        pageController.currentPage = nextIndex
+        intro.pageController.currentPage = nextIndex
         if nextIndex == 2{
-            createAni()
+            DispatchQueue.main.async {
+                self.createAni()
+            }
         }
         
         myColl.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
     @objc func scrollPagePrev(){
-        let nextIndex = max(pageController.currentPage - 1, 0)
+        let nextIndex = max(intro.pageController.currentPage - 1, 0)
         let indexPath = IndexPath(item: nextIndex, section: 0)
-        pageController.currentPage = nextIndex
+        intro.pageController.currentPage = nextIndex
         
         if nextIndex == 1{
             createAniReverse()
@@ -149,23 +82,24 @@ class IntroductionPageController: UIViewController, UICollectionViewDelegate, UI
     
     @objc func createAni(){
         UIView.animate(withDuration: 0.3, delay: 0,options: .curveEaseInOut, animations: {
-            self.bottomStackAnchor.constant = 25 + 51
-            self.view.layoutIfNeeded()
+//            self.bottomStackAnchor.constant = 25 + 51
+            self.intro.bottomStackAnchor.constant = 25 + 51
+            self.intro.layoutIfNeeded()
         }, completion: nil)
         UIView.animate(withDuration: 0.3, delay: 0.2,options: .curveEaseInOut, animations: {
-            self.secStack.alpha = 1
-            self.view.layoutIfNeeded()
+            self.intro.secStack.alpha = 1
+            self.intro.layoutIfNeeded()
         }, completion: nil)
     }
     
     @objc func createAniReverse(){
         UIView.animate(withDuration: 0.3, delay: 0.2,options: .curveEaseInOut, animations: {
-            self.bottomStackAnchor.constant = -25
-            self.view.layoutIfNeeded()
+            self.intro.bottomStackAnchor.constant = -25
+            self.intro.layoutIfNeeded()
         }, completion: nil)
         UIView.animate(withDuration: 0.3, delay: 0,options: .curveEaseInOut, animations: {
-            self.secStack.alpha = 0
-            self.view.layoutIfNeeded()
+            self.intro.secStack.alpha = 0
+            self.intro.layoutIfNeeded()
         }, completion: nil)
     }
     
@@ -187,10 +121,10 @@ class IntroductionPageController: UIViewController, UICollectionViewDelegate, UI
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let x = targetContentOffset.pointee.x
-        pageController.currentPage = Int(x / view.frame.width)
-        if pageController.currentPage == 2{
+        intro.pageController.currentPage = Int(x / view.frame.width)
+        if intro.pageController.currentPage == 2{
             createAni()
-        }else if pageController.currentPage == 1{
+        }else if intro.pageController.currentPage == 1{
             createAniReverse()
         }
     }

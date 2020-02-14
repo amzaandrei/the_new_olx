@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class changeUserProfileData: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let cellId = "cellId"
     var userDataArr = [User]()

@@ -8,7 +8,8 @@
 
 import UIKit
 import Firebase
-class presentProduct: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+class ProductPresentViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var key = ""
     var category = ""
@@ -23,7 +24,7 @@ class presentProduct: UIViewController, UICollectionViewDelegate, UICollectionVi
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
         let myController = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        myController.register(myCollectionCell.self, forCellWithReuseIdentifier: cellId)
+        myController.register(ProductCollCell.self, forCellWithReuseIdentifier: cellId)
         myController.isPagingEnabled = true
         myController.delegate = self
         myController.dataSource = self
@@ -112,7 +113,7 @@ class presentProduct: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! myCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCollCell
         let contentVar = arrayPhotos[indexPath.row]
         cell.mainPhoto.image = contentVar
         return cell
@@ -134,42 +135,3 @@ class presentProduct: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
 }
-
-
-
-class myCollectionCell: UICollectionViewCell {
-    
-    var height: CGFloat = 250
-    let mainPhoto: UIImageView = {
-        let image = UIImage()
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(mainPhoto)
-        
-        addConstraints()
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func addConstraints(){
-        
-        
-        mainPhoto.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        mainPhoto.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        mainPhoto.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        mainPhoto.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-        
-    }
-    
-}
-

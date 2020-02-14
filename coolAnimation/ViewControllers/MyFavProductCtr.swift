@@ -11,7 +11,8 @@ import UIKit
 import Firebase
 import MessageUI
 import Stripe
-class myFavProduct: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,MFMessageComposeViewControllerDelegate,UINavigationControllerDelegate {
+
+class MyFavProductViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,MFMessageComposeViewControllerDelegate,UINavigationControllerDelegate {
     
     var key = ""
     var category = ""
@@ -20,14 +21,14 @@ class myFavProduct: UIViewController, UICollectionViewDelegate, UICollectionView
     
     var arrayPhotosString = [String]()
     var arrayPhotos = [UIImage]()
-    var allData = [object]()
+    var allData = [Product]()
     
     lazy var myColl: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
         let myController = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        myController.register(myCollectionCell.self, forCellWithReuseIdentifier: cellId)
+        myController.register(ProductCollCell.self, forCellWithReuseIdentifier: cellId)
         myController.isPagingEnabled = true
         myController.delegate = self
         myController.dataSource = self
@@ -136,7 +137,7 @@ class myFavProduct: UIViewController, UICollectionViewDelegate, UICollectionView
         
         ref.observe(.value, with: { (snapshot) in
             if let dict = snapshot.value as? [String: Any]{
-                let contentVar = object(dictionary: dict)
+                let contentVar = Product(dictionary: dict)
                 self.allData.append(contentVar)
             }
         }, withCancel: nil )
@@ -197,7 +198,7 @@ class myFavProduct: UIViewController, UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! myCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCollCell
         let contentVar = arrayPhotos[indexPath.row]
         cell.mainPhoto.image = contentVar
         return cell

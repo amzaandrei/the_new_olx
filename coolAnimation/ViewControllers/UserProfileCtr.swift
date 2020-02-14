@@ -185,10 +185,10 @@ class UserProfileCtr: UIViewController, UITableViewDelegate, UITableViewDataSour
         if indexPath.row == 0 && indexPath.section == 1{
             logOut()
         }else if indexPath.row == 1 && indexPath.section == 0{
-            let editPage = changeUserProfileData()
+            let editPage = ChangeUserDataViewController()
             self.navigationController?.pushViewController(editPage, animated: true)
         }else if indexPath.row == 0 && indexPath.section == 0{
-            let blockPage = blockeViewController()
+            let blockPage = BlockedViewController()
             self.navigationController?.pushViewController(blockPage, animated: true)
         }else if indexPath.row == 3 && indexPath.section == 0{
 //            let checkoutViewController = CheckoutViewController(product: "masina",

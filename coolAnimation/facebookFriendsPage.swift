@@ -35,8 +35,6 @@ class facebookFriendsPage: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func fetchFriends(){
-//        let accesToken = FBSDKAccessToken.current().tokenString
-//        print(accesToken)
         let param = ["fields":"email,name,picture.type(large)"]
         FBSDKGraphRequest(graphPath: "me/taggable_friends", parameters: param).start(completionHandler: { (conn, result, err) in
             if err != nil{

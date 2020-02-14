@@ -23,10 +23,8 @@ class MainTabController: UITabBarController {
         
     }
     
-    
-    
     @objc func addTabs(){
-        let mainViewController1 = UINavigationController(rootViewController: expendedViewController())
+        let mainViewController1 = UINavigationController(rootViewController: CreateProductViewController())
         let mainViewController4 = UINavigationController(rootViewController: MyFavouritProductsController())
         let mainViewController2 = UINavigationController(rootViewController: TinderController())
         let mainViewController3 = UINavigationController(rootViewController: UserProfileCtr())

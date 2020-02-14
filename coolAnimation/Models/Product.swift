@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct object {
+struct Product {
     var location: String?
     var contactText: String?
     var productText: String?

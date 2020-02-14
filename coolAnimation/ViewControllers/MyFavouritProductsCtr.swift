@@ -12,7 +12,7 @@ import Firebase
 class MyFavouritProductsController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     let cellId = "cellId"
-    var objectContent = [object]()
+    var objectContent = [Product]()
     var objectImages = [Data]()
     lazy var myTable: UITableView = {
         let myTable = UITableView()
@@ -67,7 +67,7 @@ class MyFavouritProductsController: UIViewController, UITableViewDelegate, UITab
                                 
                                 ref.observe(.value, with: { (snapshot) in
                                     if let dict = snapshot.value as? [String: Any]{
-                                        let contentVar = object(dictionary: dict)
+                                        let contentVar = Product(dictionary: dict)
                                         
                                         self.objectContent.append(contentVar)
                                         
@@ -140,7 +140,7 @@ class MyFavouritProductsController: UIViewController, UITableViewDelegate, UITab
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let myFavProductPage = myFavProduct()
+        let myFavProductPage = MyFavProductViewController()
         myFavProductPage.key = self.keysArray[indexPath.row]
         myFavProductPage.category = self.categoryArray[indexPath.row]
         present(myFavProductPage, animated: true, completion: nil)

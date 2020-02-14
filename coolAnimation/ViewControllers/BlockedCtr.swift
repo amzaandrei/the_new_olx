@@ -8,7 +8,8 @@
 
 import UIKit
 import Firebase
-class blockeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+
+class BlockedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     let cellId = "cellId"
     var persArr = [User]()

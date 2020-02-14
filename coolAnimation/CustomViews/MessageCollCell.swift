@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class messageCell: UICollectionViewCell{
+class MessageCollCell: UICollectionViewCell{
     
     
     @objc var message: Messages?

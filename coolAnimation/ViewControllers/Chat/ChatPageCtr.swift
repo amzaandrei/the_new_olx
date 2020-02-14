@@ -75,7 +75,7 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
         collectionView?.backgroundColor = UIColor.white
         collectionView?.alwaysBounceVertical = true
 //        collectionView?.keyboardDismissMode = .interactive
-        collectionView?.register(messageCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(MessageCollCell.self, forCellWithReuseIdentifier: cellId)
         view.addSubview(chatBox)
         view.addSubview(sendButton)
         view.addSubview(separator)
@@ -354,7 +354,7 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! messageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! MessageCollCell
         DispatchQueue.main.async {
             
             let messageArray = self.message[indexPath.row]
@@ -383,7 +383,7 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
         
     }
     
-    @objc func createCellLayout(cell: messageCell, messageArray: Messages){
+    @objc func createCellLayout(cell: MessageCollCell, messageArray: Messages){
         
         if let profileImageUrl = self.userNameAddContact?.profileImageUrl {
             cell.profileImageView.loadImageUsingCacheString(urlString: profileImageUrl)
@@ -403,7 +403,7 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
         }
         
         if messageArray.fromId == Auth.auth().currentUser?.uid {
-            cell.bubbleView.backgroundColor = messageCell.bubbleColor
+            cell.bubbleView.backgroundColor = MessageCollCell.bubbleColor
             cell.textView.textColor = UIColor.white
             cell.profileImageView.isHidden = true
             

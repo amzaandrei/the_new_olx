@@ -481,7 +481,7 @@ class ProductSubmitCtr: UIViewController, UICollectionViewDelegate, UICollection
     
     
     @objc func setLocation(){
-        let locationView = location()
+        let locationView = LocationViewController()
         let locationNav = UINavigationController(rootViewController: locationView)
         locationView.chooseDelegate = self
         present(locationNav, animated: true, completion: nil)

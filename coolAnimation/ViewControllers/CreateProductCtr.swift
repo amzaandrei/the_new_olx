@@ -9,25 +9,14 @@
 import UIKit
 import Firebase
 import CoreData
-class expendedViewController: UIViewController, UIViewControllerTransitioningDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
-    
+class CreateProductViewController: UIViewController, UIViewControllerTransitioningDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
-    
-
-    let pages: [Page] = {
-        
-        let firstString = Page(imageName: "hustle", title: "No mire items :(", subText: "Come back soon for more or Tap below to sell an item!")
-        let secondString = Page(imageName: "hustle", title: "Messages :)", subText: "You have no messages Tap below to sell an item")
-        
-        return [firstString, secondString]
-    }()
-    
     var category: [String] = [""]
     
     let reachiability = Reachability()!
     var openingFrame: CGRect!
     @objc var users = [User]()
-    var allObject = [object]()
+    var allObject = [Product]()
     var imageProductArr = [UIImage]()
     @objc let textView: UITextView = {
         let text = UITextView()
@@ -315,7 +304,7 @@ class expendedViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     @objc func imageTapped(){
-        let presentObject = presentProduct()
+        let presentObject = ProductPresentViewController()
         presentObject.key = keyValue
         presentObject.category = productCategory
         presentObject.transitioningDelegate = self
@@ -399,7 +388,7 @@ class expendedViewController: UIViewController, UIViewControllerTransitioningDel
                     self.keyValue = rest.key
                     self.productCategory = category!
                     if let dict = rest.value as? [String: Any]{
-                        let content = object(dictionary: dict)
+                        let content = Product(dictionary: dict)
                         self.allObject.append(content)
                         ref.child(category!).child(rest.key).child("photos").observe(.value, with: { (snapshot) in
                             if let dataExist = snapshot.value as? [String: Any]{

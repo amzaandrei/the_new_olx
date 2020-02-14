@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class setName: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class RequestUsernameViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     
     @objc let nameTextField: UITextField = {

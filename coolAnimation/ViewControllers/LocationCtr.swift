@@ -14,7 +14,7 @@ protocol sendLocationData {
     func sendLocation(citiName: String,countryName: String)
 }
 
-class location: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate{
+class LocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate{
     
     
     lazy var mapView: MKMapView = {

@@ -9,9 +9,9 @@
 import Foundation
 
 
-struct Page{
-    
-    let imageName: String
-    let title: String
-    let subText: String
-}
+//struct Page{
+//    
+//    let imageName: String
+//    let title: String
+//    let subText: String
+//}

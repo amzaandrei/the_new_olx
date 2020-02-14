@@ -327,7 +327,7 @@ class SignUpEmailController: UIViewController {
                 self.activityIndicator.stopAnimating()
             }else{
                         self.activityIndicator.stopAnimating()
-                        let setPageName = setName()
+                        let setPageName = RequestUsernameViewController()
                         self.present(setPageName, animated: true, completion: nil)
                         let values = ["email": emailText, "password": passwordText,"contact": contact]
                         let ref = Database.database().reference()

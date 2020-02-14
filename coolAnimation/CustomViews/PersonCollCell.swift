@@ -8,7 +8,7 @@
 
 import UIKit
 
-class pageCell: UICollectionViewCell {
+class PersonCollCell: UICollectionViewCell {
     
     
     @objc let textLabel: UILabel = {

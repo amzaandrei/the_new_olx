@@ -71,7 +71,7 @@
         collectionView.backgroundColor = UIColor.white
         
         view.addSubview(collectionView)
-        collectionView.register(pageCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(PersonCollCell.self, forCellWithReuseIdentifier: cellId)
         addContraints()
         
         findConnectionInternetStatus()
@@ -359,7 +359,7 @@
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! pageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PersonCollCell
         
         let mainUser = MESSAGES[indexPath.row]
         
