@@ -107,6 +107,7 @@ class LogInEmailController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
         view.addSubview(logo)
         view.addSubview(myView)
         myView.addSubview(emailTextField)
