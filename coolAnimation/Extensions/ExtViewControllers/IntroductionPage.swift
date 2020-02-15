@@ -115,9 +115,8 @@ class IntroPage: UIView {
         secStack.distribution = .fillEqually
         secStack.translatesAutoresizingMaskIntoConstraints = false
         secStack.alpha = 0
-        self.addSubview(secStack)
-        self.addSubview(stack)
         
+        self.addSubviews([secStack, stack])
         
         stack.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         stack.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true

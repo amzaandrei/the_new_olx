@@ -278,19 +278,16 @@ class ChooseWhichRegisterController: UIViewController,FBSDKLoginButtonDelegate, 
             guard let secret = session?.authTokenSecret else { return }
             let credentials = TwitterAuthProvider.credential(withToken: token, secret: secret)
             self.present(MainTabController(), animated: true, completion: nil)
-            Auth.auth().signIn(with: credentials, completion: { (user, error) in
-                
+            
+            Auth.auth().signInAndRetrieveData(with: credentials) { (user, err) in
                 if let err = error {
                     print("Failed to login to Firebase with Twitter: ", err)
                     return
                 }
-                print("Successfully created a Firebase-Twitter user: ", user?.uid ?? "")
-                self.userId = user?.uid
+                print("Successfully created a Firebase-Twitter user: ", user?.user.uid ?? "")
+                self.userId = user?.user.uid
                 let twitterClient = TWTRAPIClient(userID: session?.userID)
                 if user != nil{
-                    //                    twitterClient.loadUser(withID: (session?.userID)!) { (user, error) in
-                    //
-                    //                    }
                     
                     let statusesShowEndpoint = "https://api.twitter.com/1.1/account/verify_credentials.json"
                     let params = ["include_email": "true"]
@@ -314,7 +311,8 @@ class ChooseWhichRegisterController: UIViewController,FBSDKLoginButtonDelegate, 
                     
                     
                 }
-            })
+            }
+            
         })
         
         

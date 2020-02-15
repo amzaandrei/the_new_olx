@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		241FF22E7E6F1EB777AC252D /* Pods_coolAnimation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE11D6F2874164034F8954D7 /* Pods_coolAnimation.framework */; };
+		E50895B323F74CA800E03D88 /* UIViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50895B223F74CA800E03D88 /* UIViews.swift */; };
+		E50895B523F8719F00E03D88 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50895B423F8719F00E03D88 /* Errors.swift */; };
 		E50EAC2A2015C325005631D0 /* ChangeUserDataCtr.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50EAC292015C325005631D0 /* ChangeUserDataCtr.swift */; };
 		E52220701F177E770077CE92 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E522206F1F177E770077CE92 /* Messages.swift */; };
 		E52DD28E1F876E4E00B9905A /* ProductPresentCtr.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52DD28D1F876E4E00B9905A /* ProductPresentCtr.swift */; };
@@ -109,6 +111,8 @@
 		C0A49FD8815A480EB9F89CB7 /* Pods-coolAnimation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coolAnimation.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coolAnimation/Pods-coolAnimation.debug.xcconfig"; sourceTree = "<group>"; };
 		CE11D6F2874164034F8954D7 /* Pods_coolAnimation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_coolAnimation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFE2CBC71032BCB03B39F913 /* Pods-WidgetApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WidgetApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-WidgetApp/Pods-WidgetApp.release.xcconfig"; sourceTree = "<group>"; };
+		E50895B223F74CA800E03D88 /* UIViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViews.swift; sourceTree = "<group>"; };
+		E50895B423F8719F00E03D88 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		E50EAC282013A5A9005631D0 /* bestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bestApp.entitlements; sourceTree = "<group>"; };
 		E50EAC292015C325005631D0 /* ChangeUserDataCtr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserDataCtr.swift; sourceTree = "<group>"; };
 		E522206F1F177E770077CE92 /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
@@ -273,6 +277,8 @@
 				E594D1AC1F01483500A88B9F /* ExpandAnimation.swift */,
 				E592A51223F36CDA00311D4F /* Functionality */,
 				E592A51123F36C9700311D4F /* ExtViewControllers */,
+				E50895B223F74CA800E03D88 /* UIViews.swift */,
+				E50895B423F8719F00E03D88 /* Errors.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -738,6 +744,7 @@
 				E592A51423F36D8D00311D4F /* ProductSubmit.swift in Sources */,
 				E50EAC2A2015C325005631D0 /* ChangeUserDataCtr.swift in Sources */,
 				E594D1A91F01342A00A88B9F /* PersonCollCell.swift in Sources */,
+				E50895B323F74CA800E03D88 /* UIViews.swift in Sources */,
 				E5D77D4823F4688000554A9A /* ProductCollCell.swift in Sources */,
 				E592A50523F2FB5D00311D4F /* LogInEmail.swift in Sources */,
 				E5DD0682201A96D90022208D /* BlockedCtr.swift in Sources */,
@@ -753,6 +760,7 @@
 				E592A50723F2FC2400311D4F /* SignUpEmail.swift in Sources */,
 				E5A214291F86DA2A00675C6E /* Product.swift in Sources */,
 				E592A50023F2F8AE00311D4F /* IntroductionPage.swift in Sources */,
+				E50895B523F8719F00E03D88 /* Errors.swift in Sources */,
 				E581243320178006000B47E2 /* ChooseWhichRegisterCtr.swift in Sources */,
 				E52DD28E1F876E4E00B9905A /* ProductPresentCtr.swift in Sources */,
 				E5DAF6011F894CEA00A66486 /* MyFavouritProductsCtr.swift in Sources */,
