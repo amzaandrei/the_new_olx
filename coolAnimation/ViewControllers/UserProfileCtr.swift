@@ -21,7 +21,7 @@ class UserProfileCtr: UIViewController, UITableViewDelegate, UITableViewDataSour
 //    let settingsVC = SettingsViewController()
     
     var mainArray = [["Persons blocked","Change User Data","Payment","Shipping"],["Log out"]]
-    @objc var users = [User]()
+    @objc var userData: User!
     
     let userDefaults = UserDefaults()
     
@@ -82,7 +82,7 @@ class UserProfileCtr: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         myTable.register(UITableViewCell.self, forCellReuseIdentifier: cellIdSettings)
         
-        findIfIsConnected()
+        collectUserData()
         
         managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
@@ -92,40 +92,27 @@ class UserProfileCtr: UIViewController, UITableViewDelegate, UITableViewDataSour
         dismiss(animated: true, completion: nil)
     }
     
-    @objc func findIfIsConnected(){
-        let uid = Auth.auth().currentUser?.uid
-        if uid != nil{
-            let ref = Database.database().reference().child("users").child(uid!)
-            ref.observe(.value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String: AnyObject]{
-                    let user = User(dictionary: dictionary)
-                    self.users.append(user)
-                    if let imageUrl = user.profileImageUrl{
-                        self.setImageUserNav(imageUrl: imageUrl)
-                    }
-                }
-            })
-        }else{
-//            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Sign In", style: .done, target: self, action: #selector(LogInPage))
+    @objc func collectUserData(){
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        FirebaseUser.instanceShared.collectUserData(uid: uid) { (user, err) in
+            self.userData = user
+            if let imageUrl = self.userData.profileImageUrl{
+                self.setImageUserNav(imageUrl: imageUrl)
+            }
         }
     }
     
     @objc func setImageUserNav(imageUrl: String){
-        let url = URL(string: imageUrl)
-        let dataTask = URLSession.shared.dataTask(with: url!) { (data, response, err) in
-            if err != nil{
-                print(err!)
+        DownloadImage.instanceShared.downloadImage(imgStr: imageUrl) { (data, err) in
+            if let dataEx = data {
+                DispatchQueue.main.async(execute: {
+                    self.profileImage.image = UIImage(data: dataEx)
+                    self.bigProfilePicture.image = UIImage(data: dataEx)
+                })
             }else{
-                
-                if let downloadedImage = UIImage(data: data!){
-                    DispatchQueue.main.async(execute: {
-                        self.profileImage.image = downloadedImage
-                        self.bigProfilePicture.image = downloadedImage
-                    })
-                }
+                print(err)
             }
         }
-        dataTask.resume()
     }
     
     @objc func addConstraints(){
@@ -203,40 +190,24 @@ class UserProfileCtr: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     @objc func logOut(){
-        do{
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatInfoModel")
-            userDefaults.set(false, forKey: "isLoggedIn")
-            let results = try managedObjectContext.fetch(fetchRequest)
-            
-            for managedObject in results{
-                let managedObjectData = managedObject
-                managedObjectContext.delete(managedObjectData as! NSManagedObject)
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatInfoModel")
+//
+//        let results = try managedObjectContext.fetch(fetchRequest)
+//
+//        for managedObject in results{
+//            let managedObjectData = managedObject
+//            managedObjectContext.delete(managedObjectData as! NSManagedObject)
+//        }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        FirebaseUser.instanceShared.logOutUser(uid: uid) { (res, err) in
+            if res{
+                self.userDefaults.set(false, forKey: "isLoggedIn")
+                self.present(IntroductionPageController(), animated: true, completion: nil)
+            }else{
+                print(err)
             }
-            
-            if FBSDKAccessToken.current() != nil{
-                FBSDKLoginManager().logOut()
-            }
-            
-            if let googleUser = GIDSignIn.sharedInstance().currentUser{
-                if googleUser != nil{
-                    GIDSignIn.sharedInstance().signOut()
-                }
-            }
-            
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            let timeStamp = NSNumber(integerLiteral: Int(NSDate().timeIntervalSince1970))
-            let ref = Database.database().reference().child("users").child(uid)
-            let value = ["active": false,"timeActibity": timeStamp]
-            ref.updateChildValues(value) { (err, ref) in
-                print("User is inactiev")
-            }
-            try Auth.auth().signOut()
-        }catch let error{
-            print(error)
         }
-        present(IntroductionPageController(), animated: true, completion: nil)
     }
-    
 }
 
 //extension profilData {

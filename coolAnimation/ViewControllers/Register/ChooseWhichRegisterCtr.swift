@@ -222,41 +222,15 @@ class ChooseWhichRegisterController: UIViewController,FBSDKLoginButtonDelegate, 
     
     func uploadGoogleUserData(user: GIDGoogleUser){
         guard let authentification = user.authentication else { return }
-        let credential = GoogleAuthProvider.credential(withIDToken: authentification.idToken, accessToken: authentification.accessToken)
-        Auth.auth().signIn(with: credential) { (user, err) in
-            if err != nil{
-                print(err?.localizedDescription)
-                return
+        let credentials = GoogleAuthProvider.credential(withIDToken: authentification.idToken, accessToken: authentification.accessToken)
+        GoogleSignUp.instanceShared.signUpGoogle(credentials: credentials) { (res, err) in
+            if res{
+                print("user created and data uploaded")
+                self.present(MainTabController(), animated: true, completion: nil)
+            }else{
+                print(err)
             }
-            Database.database().reference().child("users").observe(.value, with: { (snapshot) in
-                if err != nil{
-                    print(err?.localizedDescription)
-                    return
-                }
-                let userName = user?.displayName
-                let emailAdress = user?.email
-                let url = user?.photoURL?.absoluteString
-                var ok: Bool = true
-                for elem in snapshot.children.allObjects as! [DataSnapshot]{
-                    let elemKey = elem.key
-                    if elemKey == user?.uid{
-                        ok = false
-                    }
-                }
-                if ok {
-                    self.present(MainTabController(), animated: true, completion: nil)
-                    self.uploadDataToFirebase(emailAdress: emailAdress!,userName: userName!,url: url as! String,userId: (user?.uid)!)
-                }else{
-                    let alertController = UIAlertController(title: "Important", message: "In our database exists a similiar account", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "Ok", style: .default, handler: nil) /// poti sa introduc sa si reseteza parola daca vrea
-                    alertController.addAction(action)
-                    self.present(alertController, animated: true, completion: nil)
-                    if let googleUser = GIDSignIn.sharedInstance().currentUser{
-                        GIDSignIn.sharedInstance().signOut()
-                    }
-                }
-            }
-            )}
+        }
     }
     
     @objc func setupTwitterButton() {

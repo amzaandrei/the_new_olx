@@ -12,7 +12,7 @@ import Firebase
 class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let cellId = "cellId"
-    var userDataArr = [User]()
+    var userData: User!
     var cellTapped: String! = ""
     
     let rowsText = ["","Name","Email","Number"]
@@ -93,35 +93,33 @@ class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITab
     
     @objc func animateTextField(){
         UIView.animate(withDuration: 1) {
-            self.heightBottomchatBox.constant = -50
+            self.heightBottomchatBox.constant = -150
 //            self.heightBottomseparator.constant = -50
 //            self.heightBottomsendButton.constant = -59
+            self.view.layoutIfNeeded()
         }
     }
     
     func fetchUserContent(refresh: Bool){
-        var refreshData = [User]()
+        var refreshData : User!
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("users").child(uid)
-        ref.observeSingleEvent(of: .value, with: { (snap) in
-            
-            if let dict = snap.value as? [String: AnyObject]{
-                let obj = User(dictionary: dict)
+        FirebaseUser.instanceShared.collectUserData(uid: uid) { (user, err) in
+            if let userEx = user{
                 if !refresh{
-                    self.userDataArr.append(obj)
+                    self.userData = userEx
                 }else{
-                    refreshData.append(obj)
+                    refreshData = userEx
                 }
+                DispatchQueue.main.async {
+                    self.myTable.reloadData()
+                    self.myTable.delegate = self
+                    self.myTable.dataSource = self
+                }
+            }else{
+                print(err)
             }
-            DispatchQueue.main.async {
-                self.myTable.reloadData()
-                self.myTable.delegate = self
-                self.myTable.dataSource = self
-            }
-        }) { (err) in
-            print(err.localizedDescription)
-            return
         }
+        
     }
     
     func addConstraints(){
@@ -137,7 +135,6 @@ class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! custommTableCell
-        let userData = userDataArr[0]
         let rowTextData = rowsText[indexPath.row]
         if indexPath.row == 0{
             cell.profileImageView.loadImageUsingCacheString(urlString: userData.profileImageUrl!)
@@ -151,6 +148,9 @@ class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITab
         }else if indexPath.row == 3{
             if let contactNumber = userData.numberContact {
                 cell.otherLabels.text = rowTextData + " : " + contactNumber
+                cell.profileImageView.image = UIImage(named: "contact")
+            }else{
+                cell.otherLabels.text = rowTextData + " : " + "not available yet"
                 cell.profileImageView.image = UIImage(named: "contact")
             }
         }
@@ -173,18 +173,16 @@ class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @objc func uploadData(){
-        let uid = Auth.auth().currentUser?.uid
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let textFieldUpdate = chatBox.text else { return }
-        let ref = Database.database().reference().child("users").child(uid!)
         let values = [cellTapped: textFieldUpdate]
-        ref.updateChildValues(values) { (err, datRef) in
-            if err != nil{
-                print(err?.localizedDescription)
-                return
-            }else{
+        FirebaseUser.instanceShared.updateUserChildData(uid: uid, values: values as! FirebaseUser.JSONStandard) { (res, err) in
+            if res{
                 print("updated")
                 self.chatBox.text = ""
                 self.fetchUserContent(refresh: true)
+            }else{
+                print(err)
             }
         }
     }
@@ -224,33 +222,13 @@ class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @objc func changeUserProfilImage(compressedImage: Data){
-        let uid = Auth.auth().currentUser?.uid
-        let imageName = NSUUID().uuidString
-        let refStorage = Storage.storage().reference().child(imageName)
-        let ref = Database.database().reference().child("users").child(uid!)
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        refStorage.putData(compressedImage, metadata: nil) { (metadata, err) in
-            if err != nil{
-                print(err?.localizedDescription)
+        FirebaseUser.instanceShared.uploadUserProfileImg(uid: uid, imgData: compressedImage) { (res, err) in
+            if res{
+                print("Your data was succesfullt updated")
             }else{
-                
-//                if let imageURl = metadata?.downloadURL()?.absoluteString{
-                refStorage.downloadURL(completion: { (imageURl, err) in
-                    if err != nil{
-                        debugPrint(err?.localizedDescription)
-                    }
-                    let value = ["profilePicture": imageURl?.absoluteString]
-                    ref.updateChildValues(value, withCompletionBlock: { (err, ref) in
-                        if err != nil{
-                            print(err?.localizedDescription)
-                        }else{
-                            print("Your data was succesfullt updated")
-                        }
-                    })
-                })
-                    
-//                }
-                
+                print(err)
             }
         }
         
@@ -287,10 +265,6 @@ class custommTableCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: "cellId")
         addSubview(profileImageView)
         addSubview(otherLabels)
-        
-//        let profileImageTapp = UITapGestureRecognizer(target: self, action: #selector(changePicture))
-//        profileImageView.addGestureRecognizer(profileImageTapp)
-        
         addConstraints()
     }
     
