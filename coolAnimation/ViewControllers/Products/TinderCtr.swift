@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import CoreData
-class CreateProductViewController: UIViewController, UIViewControllerTransitioningDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class TinderCtr: UIViewController, UIViewControllerTransitioningDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var category: [String] = [""]
     

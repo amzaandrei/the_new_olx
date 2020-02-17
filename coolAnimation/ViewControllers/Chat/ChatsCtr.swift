@@ -75,7 +75,7 @@
         addContraints()
         
         findConnectionInternetStatus()
-        observeUserMessages()
+//        observeUserMessages()
         
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
@@ -105,24 +105,23 @@
         
     }
     
-    
-    @objc func observeUserMessages(){
-        
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        let ref = Database.database().reference().child("user-messages").child(uid)
-        
-        ref.observe(.childAdded, with: { (snapshot) in
-            let messageId = snapshot.key
-            let messageRef = Database.database().reference().child("messages").child(messageId)
-            
-            messageRef.observe(.value, with: { (snapshot) in
-                
-                let coreDataVar = ChatInfoModel(context: self.manageObjectContext)
-                
-                if let dictionary = snapshot.value as? [String: AnyObject]{
-                    let messagesValue = Messages(dictionary: dictionary)
-                    self.MESSAGES.append(messagesValue)
+//    @objc func observeUserMessages(){
+//
+//        guard let uid = Auth.auth().currentUser?.uid else { return }
+//
+//        let ref = Database.database().reference().child("user-messages").child(uid)
+//
+//        ref.observe(.childAdded, with: { (snapshot) in
+//            let messageId = snapshot.key
+//            let messageRef = Database.database().reference().child("messages").child(messageId)
+//
+//            messageRef.observe(.value, with: { (snapshot) in
+//
+//                let coreDataVar = ChatInfoModel(context: self.manageObjectContext)
+//
+//                if let dictionary = snapshot.value as? [String: AnyObject]{
+//                    let messagesValue = Messages(dictionary: dictionary)
+//                    self.MESSAGES.append(messagesValue)
 //                    coreDataVar.fromImage = messagesValue.toIdImageUrl
                     // TODO: create here seen messages
                     //print(messagesValue.active)
@@ -152,30 +151,30 @@
 //                    }catch let err{
 //                        print(err.localizedDescription)
 //                    }
-                    
-                    if let toId = messagesValue.chatPartner(){
-                        self.messagesDictionary[toId] = messagesValue
-                        
-                        self.MESSAGES = Array(self.messagesDictionary.values)
-                        self.MESSAGES.sort(by: { (m1, m2) -> Bool in
-                            
-                            return (m1.timestamp?.intValue)! > (m2.timestamp?.intValue)!
-                        })
-                    }
-                    self.timer?.invalidate() /// blocheaza accesarea functiei iar la ult mess nu mai invalideaza ca e deasupra self.timer = si intra in functie
-                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-                }
-                
-            }, withCancel: nil)
-            
-        }, withCancel: nil)
-    }
+//
+//                    if let toId = messagesValue.chatPartner(){
+//                        self.messagesDictionary[toId] = messagesValue
+//
+//                        self.MESSAGES = Array(self.messagesDictionary.values)
+//                        self.MESSAGES.sort(by: { (m1, m2) -> Bool in
+//
+//                            return (m1.timestamp?.intValue)! > (m2.timestamp?.intValue)!
+//                        })
+//                    }
+//                    self.timer?.invalidate() /// blocheaza accesarea functiei iar la ult mess nu mai invalideaza ca e deasupra self.timer = si intra in functie
+//                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+//                }
+//
+//            }, withCancel: nil)
+//
+//        }, withCancel: nil)
+//    }
     
-    @objc func handleReloadTable(){
-        DispatchQueue.main.async(execute: {
-            self.collectionView.reloadData()
-        })
-    }
+//    @objc func handleReloadTable(){
+//        DispatchQueue.main.async(execute: {
+//            self.collectionView.reloadData()
+//        })
+//    }
     
     
     @objc func addNotification(bodyText: String,fromId: String){
@@ -364,16 +363,6 @@
         let mainUser = MESSAGES[indexPath.row]
         
         
-        //        let coreDataItem = messageCoreData[indexPath.row]
-        //
-        //
-        //        if let nameExist = coreDataItem.fromName{
-        //            cell.textLabel.text = nameExist
-        //            print(coreDataItem.fromName)
-        //        }
-        //        cell.detailedLabel.text = coreDataItem.fromMessage
-        
-        
         if let Id = mainUser.chatPartner() {
             Database.database().reference().child("users").child(Id).observe(.value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject] {
@@ -458,15 +447,6 @@
     }
     
     
-//    func findTheThrought(){
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        print(self.MESSAGES)
-//        if appDelegate.lastStruct == self.MESSAGES{
-//            print("yes")
-//        }else{
-//            print("no")
-//        }
-//    }
     
  }
  

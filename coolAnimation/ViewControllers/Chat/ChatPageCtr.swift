@@ -19,8 +19,6 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
             
             self.userLabel.text = self.userNameAddContact?.name
             self.navigationItem.titleView = self.userLabel
-            
-            
             observerMessages()
             
         }
@@ -101,6 +99,7 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
     var heightBottomsendButton: NSLayoutConstraint!
     var heightBottomseparator: NSLayoutConstraint!
     var heightBottomimagePickerSend: NSLayoutConstraint!
+    
     @objc func addConstraints(){
         self.sendButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         self.sendButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -193,8 +192,6 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
             UIView.animate(withDuration: duration, animations: {
                 self.view.layoutIfNeeded()
             })
-            
-            //            animateView(height: keyboardSize.height)
         }
     }
     
@@ -262,8 +259,6 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
                     print(err!)
                     return
                 }else{
-                    
-//                    if let fileNameUrl = metadata?.downloadURL()?.absoluteString{
                     ref.downloadURL(completion: { (fileNameUrl, err) in
                         if err != nil{
                             debugPrint(err?.localizedDescription)
@@ -273,11 +268,9 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
                             self.uploadImageToFirebase(image: thumbNailVideoUrlVar, completion: { (imageUrl) in
                                 let proprieties: [String: Any] = ["imageUrl": imageUrl,"videHeight": thumbNailVideoUrlVar.size.height, "videoWidth": thumbNailVideoUrlVar.size.width, "fileNameUrl": fileNameUrl?.absoluteString]
                                 self.defaultSend(proprities: proprieties)
-                                
                             })
                         }
                     })
-//                    }
                 }
             })
             
@@ -285,7 +278,6 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
                 if let completedUnitCount = snapshot.progress?.completedUnitCount {
                     self.navigationItem.title = String(completedUnitCount)
                 }
-                //                print(snapshot.progress?.completedUnitCount) /// upload data printed
             })
             
             uploadTask.observe(.success, handler: { (snapshot) in
@@ -332,16 +324,12 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
                 if err != nil{
                     print(err!)
                 }else{
-//                    if let imageUrl = metadata?.downloadURL()?.absoluteString{
                     storage.downloadURL(completion: { (imageUrl, err) in
                         if err != nil{
                             debugPrint(err?.localizedDescription)
                         }
                         completion((imageUrl?.absoluteString)!)
                     })
-                    
-                        //                        self.sendMessageImageUrl(messageUrl: imageUrl, image: image!)
-//                    }
                 }
             })
         }
@@ -350,7 +338,6 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return message.count
-        //        return 2
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -361,10 +348,6 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
             cell.textView.text = messageArray.text
             
             self.createCellLayout(cell: cell, messageArray: messageArray)
-            //        if messageArray.active != nil{
-            //            message.remove(at: indexPath.row)
-            //        }
-            
             
             cell.chatLogController = self
             cell.message = messageArray
@@ -532,9 +515,6 @@ class ChatPageController: UICollectionViewController  , UICollectionViewDelegate
             }
         }, withCancel: nil)
     }
-    
-    
-    
     
     
     @objc func observerMessages(){

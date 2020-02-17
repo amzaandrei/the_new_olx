@@ -24,7 +24,7 @@ class MainTabController: UITabBarController {
     }
     
     @objc func addTabs(){
-        let mainViewController1 = UINavigationController(rootViewController: CreateProductViewController())
+        let mainViewController1 = UINavigationController(rootViewController: TinderCtr())
         let mainViewController4 = UINavigationController(rootViewController: MyFavouritProductsController())
         let mainViewController2 = UINavigationController(rootViewController: TinderController())
         let mainViewController3 = UINavigationController(rootViewController: UserProfileCtr())
@@ -35,7 +35,7 @@ class MainTabController: UITabBarController {
         let image4 = UIImage(named: "favourites")
         
         
-        let tabOne = mainViewController1   ///////trebuie schimbata cu view ul unde vor fi obiectele de vanzare
+        let tabOne = mainViewController1   
         let tabOneBarItem = UITabBarItem(title: "Objects", image: image1, selectedImage: nil)
         tabOne.tabBarItem = tabOneBarItem
         
