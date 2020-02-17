@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
         if !isLoggedIn{
             window?.rootViewController = IntroductionPageController()
         }else{
-            window?.rootViewController = CountrySelector()
+            window?.rootViewController = MainTabController()
         }
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self

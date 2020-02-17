@@ -239,8 +239,6 @@ class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITab
 
 class custommTableCell: UITableViewCell {
     
-    
-    
     let profileImageView: UIImageView = {
         let image = UIImage(named: "hustle")
         let imageView = UIImageView(image: image)

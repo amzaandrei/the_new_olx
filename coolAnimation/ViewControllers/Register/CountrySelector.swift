@@ -8,11 +8,17 @@
 
 import Foundation
 
+protocol PrefixCountry: class{
+    func sendPrefixCountry(prefix: String)
+}
+
 class CountrySelector: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let cellId = "cellId"
     
     var data: [[String: String]]!
+    
+    weak var delegate: PrefixCountry!
     
     lazy var countriesTable: UITableView = {
         let t = UITableView()
@@ -51,6 +57,15 @@ class CountrySelector: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
     }
     
+    func flag(country:String) -> String {
+        let base : UInt32 = 127397
+        var s = ""
+        for v in country.unicodeScalars {
+            s.unicodeScalars.append(UnicodeScalar(base + v.value)!)
+        }
+        return String(s)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
@@ -58,8 +73,14 @@ class CountrySelector: UIViewController, UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let dataa = data[indexPath.row]
-        cell.textLabel?.text = dataa["name"]
+        cell.textLabel?.text = flag(country: dataa["code"]!) + "  " + dataa["name"]!
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dataa = data[indexPath.row]
+        delegate.sendPrefixCountry(prefix: dataa["dial_code"]!)
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

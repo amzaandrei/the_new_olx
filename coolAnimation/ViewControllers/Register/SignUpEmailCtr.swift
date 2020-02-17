@@ -12,7 +12,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreData
 //class LogInController: UIViewController, GIDSignInUIDelegate,FBSDKLoginButtonDelegate,GIDSignInDelegate {
-class SignUpEmailController: UIViewController {
+class SignUpEmailController: UIViewController, PrefixCountry {
     
     let userDefaults = UserDefaults()
     
@@ -63,6 +63,7 @@ class SignUpEmailController: UIViewController {
         textField.clipsToBounds = true
         textField.autocapitalizationType = .none
         textField.keyboardType = .numberPad
+        textField.addTarget(self, action: #selector(presentPrefixCtr), for: .editingDidBegin)
         return textField
     }()
     
@@ -199,22 +200,18 @@ class SignUpEmailController: UIViewController {
         
         manajedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-//        setupGoogleButtons()
-//        setupTwitterButton()
-//        setupFacebookButton()
+    }
+
+    @objc func presentPrefixCtr(){
+        let prefixCtr = CountrySelector()
+        prefixCtr.delegate = self as! PrefixCountry
+        self.present(prefixCtr, animated: true, completion: nil)
     }
     
+    func sendPrefixCountry(prefix: String) {
+        self.contactTextField.text = prefix
+    }
     
-    
-    
-    
-    
-    
-    
-//    func setupFacebookButton(){
-//        facebookBtt.topAnchor.constraint(equalTo: or.bottomAnchor,constant: 150).isActive = true
-//        facebookBtt.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//    }
     
     @objc func dismissKeyboard(){
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
