@@ -45,7 +45,7 @@ class FirebaseUser: NSObject {
         
     }
     
-    func uploadUserProfileImg(uid: String, imgData: Data, completion: @escaping (Bool, String?) -> ()){
+    func uploadUserProfileImg(uid: String, imgData: Data, additionalVal: [String: String]?, completion: @escaping (Bool, String?) -> ()){
         
         let imageName = NSUUID().uuidString
         let refStorage = Storage.storage().reference().child(imageName)
@@ -59,8 +59,14 @@ class FirebaseUser: NSObject {
                     if err != nil{
                         completion(false, err2?.localizedDescription)
                     }
-                    let value = ["profilePicture": imageURl?.absoluteString]
-                    self.ref.child(uid).updateChildValues(value, withCompletionBlock: { (err3, ref) in
+                    guard let profilePictureStr = imageURl?.absoluteString else { return }
+                    var values = ["profilePicture": profilePictureStr]
+                    if let addValExt = additionalVal{
+                        for (key, item) in addValExt{
+                            values.updateValue(item, forKey: key)
+                        }
+                    }
+                    self.ref.child(uid).updateChildValues(values, withCompletionBlock: { (err3, ref) in
                         if err != nil{
                             completion(false, err3?.localizedDescription)
                         }else{

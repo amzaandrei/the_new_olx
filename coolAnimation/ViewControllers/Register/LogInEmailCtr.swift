@@ -101,54 +101,7 @@ class LogInEmailController: UIViewController {
         
     }
     
-    func lengthError(text: String) throws{
-           guard text.count > 10 else {
-               throw ValidationError.tooShort
-           }
-           
-           guard text.count < 25 else {
-               throw ValidationError.tooLong
-           }
-       }
-       
-       func validateUsername(text: String) throws {
-           
-           try lengthError(text: text)
-           
-           for ch in text{
-               guard ch.isLetter else {
-                   throw ValidationError.invalidCharacterFound(ch)
-               }
-           }
-       }
-       
-       func validateEmail(text: String) throws {
-
-           try lengthError(text: text)
-           
-           for ch in text{
-               if ch == "@" || ch == "." {
-                   continue
-               }
-               guard ch.isLetter else {
-                   throw ValidationError.invalidCharacterFound(ch)
-               }
-           }
-       }
-       
-       func validatePassword(text: String) throws {
-           
-           try lengthError(text: text)
-           
-           for ch in text{
-               if ch == "-" || ch == "_" {
-                   continue
-               }
-               guard ch.isLetter else {
-                   throw ValidationError.invalidCharacterFound(ch)
-               }
-           }
-       }
+    
 }
 
 

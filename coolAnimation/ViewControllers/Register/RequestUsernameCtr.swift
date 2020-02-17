@@ -117,44 +117,16 @@ class RequestUsernameViewController: UIViewController, UINavigationControllerDel
     
     @objc func Done(){
         
-        
-        if let uid = Auth.auth().currentUser?.uid{
-            let imageName = NSUUID().uuidString
-            let refStorage = Storage.storage().reference().child(imageName)
-            let updatedImage = UIImagePNGRepresentation(profileImage.image!)
-            
-            
-            refStorage.putData(updatedImage!, metadata: nil, completion: { (metadata, err) in
-                if err != nil{
-                    print(err!)
-                }else{
-//                    if let profileImageUrl = metadata?.downloadURL()?.absoluteString{
-                    refStorage.downloadURL(completion: { (profileImageUrl, err) in
-                        if err != nil{
-                            debugPrint(err?.localizedDescription)
-                            let values = ["name": self.nameTextField.text!, "profilePicture": profileImageUrl?.absoluteString] as [String : Any]
-                            self.registerUserIntoDataBase(uid: uid, values: values)
-                        }
-                    })
-//                    }
-                }
-            })
-        }
-        let mainClasss = MainTabController()
-        present(mainClasss, animated: true, completion: nil)
-    }
-    
-    
-    @objc func registerUserIntoDataBase(uid: String,values: [String: Any]){
-        let ref = Database.database().reference()
-        ref.child("users").child(uid).updateChildValues(values, withCompletionBlock: { (errr, ref) in
-            if errr != nil{
-                print(errr!)
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let imageData = UIImagePNGRepresentation(profileImage.image!) else { return }
+        FirebaseUser.instanceShared.uploadUserProfileImg(uid: uid, imgData: imageData, additionalVal: ["name": self.nameTextField.text!]) { (res, err) in
+            if res{
+                let mainClasss = MainTabController()
+                self.present(mainClasss, animated: true, completion: nil)
             }else{
-                print("Data succesfully uploaded")
+                print(err)
             }
-        })
-        print(uid)
+        }
     }
 }
 

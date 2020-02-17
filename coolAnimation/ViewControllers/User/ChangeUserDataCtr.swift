@@ -224,7 +224,7 @@ class ChangeUserDataViewController: UIViewController, UITableViewDelegate, UITab
     @objc func changeUserProfilImage(compressedImage: Data){
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        FirebaseUser.instanceShared.uploadUserProfileImg(uid: uid, imgData: compressedImage) { (res, err) in
+        FirebaseUser.instanceShared.uploadUserProfileImg(uid: uid, imgData: compressedImage, additionalVal: nil) { (res, err) in
             if res{
                 print("Your data was succesfullt updated")
             }else{

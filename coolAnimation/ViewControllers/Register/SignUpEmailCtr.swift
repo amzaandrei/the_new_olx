@@ -312,36 +312,58 @@ class SignUpEmailController: UIViewController {
             contactTextField.shake()
             return
         }
-        
+//        
+//        do{
+//            try validateEmail(text: emailText)
+//        }catch {
+//            emailTextField.shake()
+//            print(error.localizedDescription)
+//            return
+//        }
+//        
+//        do{
+//            try validatePassword(text: passwordText)
+//        }catch{
+//            print(error.localizedDescription)
+//            passwordTextField.shake()
+//            return
+//        }
+//        
+//        do{
+//            try validateContact(text: passwordText)
+//        }catch{
+//            print(error.localizedDescription)
+//            contactTextField.shake()
+//            return
+//        }
+//        
+//        
         addActivity()
         activityIndicator.startAnimating()
         Auth.auth().createUser(withEmail: emailText, password: passwordText, completion: { (user, error) in
             if error != nil{
                 print(error!)
-                let actionController = UIAlertController(title: "Warning", message: "We found that this account is already used", preferredStyle: .alert)
-                let action = UIAlertAction(title: "ok", style: .default, handler: nil)
-                actionController.addAction(action)
-                self.present(actionController, animated: true, completion: nil)
+                self.popupAlert(title: "Warning", message: "We found that this account is already used", actionTitles: ["ok"], actions:[{action1 in
+                }, nil])
                 self.effectView.removeFromSuperview()
                 self.loadingLabel.removeFromSuperview()
                 self.activityIndicator.stopAnimating()
             }else{
-                        self.activityIndicator.stopAnimating()
+                self.activityIndicator.stopAnimating()
+                let values = ["email": emailText, "password": passwordText,"contact": contact]
+                guard let uid = user?.user.uid else { return }
+
+                FirebaseUser.instanceShared.updateUserChildData(uid: uid, values: values as FirebaseUser.JSONStandard) { (res, err) in
+                    if res{
+                        self.userDefaults.set(true, forKey: "isLoggedIn")
                         let setPageName = RequestUsernameViewController()
                         self.present(setPageName, animated: true, completion: nil)
-                        let values = ["email": emailText, "password": passwordText,"contact": contact]
-                        let ref = Database.database().reference()
-                        let usersRef = ref.child("users").child((user?.user.uid)!)
-                        usersRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
-                            if error != nil{
-                                print(error!)
-                            }else{
-                                let userDefaults = UserDefaults()
-                                self.userDefaults.set(true, forKey: "isLoggedIn")
-                                
-                                print("User data succesfully  uploaded")
-                            }
-                        })
+                        print("User data succesfully  uploaded")
+                    }else{
+                        print(err)
+                    }
+                }
+                
             }
         })
         
